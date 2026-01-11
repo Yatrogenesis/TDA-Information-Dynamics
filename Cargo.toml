@@ -1,0 +1,37 @@
+[package]
+name = "tda_info_dynamics"
+version = "0.1.0"
+edition = "2021"
+authors = ["Francisco Molina Burgos <yatrogenesis@proton.me>"]
+description = "Topological Dynamics of Information: Critical Transition Detection via Persistent Homology and Sequential Analysis (TDA-CUSUM)"
+license = "MIT"
+repository = "https://github.com/Yatrogenesis/TDA-Information-Dynamics"
+keywords = ["topology", "phase-transitions", "persistent-homology", "information-theory", "complex-systems"]
+categories = ["science", "mathematics"]
+
+[dependencies]
+ndarray = { version = "0.16", features = ["rayon"] }
+rand = "0.9"
+rand_chacha = "0.9"
+rand_distr = "0.5"
+rayon = "1.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+num-complex = "0.4"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[[bin]]
+name = "lj_tda_cusum"
+path = "src/bin/lj_tda_cusum.rs"
+
+[[bin]]
+name = "kuramoto_tda"
+path = "src/bin/kuramoto_tda.rs"
+
+[lib]
+name = "tda_info_dynamics"
+path = "src/lib.rs"
