@@ -128,7 +128,6 @@ impl PersistenceLandscape {
 /// Tent function for persistence interval
 fn tent_function(t: f64, birth: f64, death: f64) -> f64 {
     let mid = (birth + death) / 2.0;
-    let half_life = (death - birth) / 2.0;
 
     if t < birth || t > death {
         0.0

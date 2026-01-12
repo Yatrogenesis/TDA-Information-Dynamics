@@ -116,8 +116,7 @@ pub fn compute_persistence(vr: &VietorisRips) -> PersistenceDiagram {
     // H0: Track component births and deaths via union-find
     let mut parent: Vec<usize> = (0..n).collect();
     let mut rank = vec![0usize; n];
-    let mut birth_time = vec![0usize; n];  // When each component was born
-    let mut alive = vec![true; n];  // Which components are still independent
+    let birth_time = vec![0usize; n];  // When each component was born
 
     fn find(parent: &mut [usize], i: usize) -> usize {
         if parent[i] != i {
@@ -187,7 +186,7 @@ pub fn compute_persistence(vr: &VietorisRips) -> PersistenceDiagram {
     for i in 0..n {
         roots.insert(find(&mut parent, i));
     }
-    for root in roots {
+    for _ in roots {
         diagram.add(PersistenceInterval::new(0.0, f64::INFINITY, 0));
     }
 

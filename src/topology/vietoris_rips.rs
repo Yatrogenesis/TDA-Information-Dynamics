@@ -21,6 +21,7 @@ pub struct VietorisRips {
 }
 
 /// A simplex represented by its vertex indices
+#[allow(dead_code)]
 #[derive(Debug, Clone, Hash, Eq, PartialEq)]
 pub struct Simplex {
     pub vertices: Vec<usize>,
@@ -48,7 +49,6 @@ impl VietorisRips {
 
     /// Create from point cloud (computes distance matrix)
     pub fn from_points(points: &Array2<f64>, max_epsilon: f64, n_steps: usize) -> Self {
-        let n = points.nrows();
         let distances = Self::compute_distance_matrix(points);
         Self {
             distances,

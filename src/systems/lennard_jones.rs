@@ -41,7 +41,8 @@ pub struct LJState {
 pub struct LennardJonesSystem {
     /// Number of particles
     n_particles: usize,
-    /// LJ sigma parameter
+    /// LJ sigma parameter (used in physics equations)
+    #[allow(dead_code)]
     sigma: f64,
     /// LJ epsilon parameter
     epsilon: f64,

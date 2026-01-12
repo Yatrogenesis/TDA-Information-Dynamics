@@ -23,7 +23,6 @@ use tda_info_dynamics::{
     compute_persistence,
     compute_entropy,
     CusumDetector,
-    BettiCurve,
 };
 
 fn main() {
@@ -110,9 +109,10 @@ fn main() {
 
     // Initialize CUSUM detectors
     // Very sensitive: low allowance (0.1σ), low threshold (2.0σ)
-    let mut cusum_entropy = CusumDetector::with_params(0.1, 2.0);
-    let mut cusum_beta0 = CusumDetector::with_params(0.1, 2.0);
-    let mut cusum_beta1 = CusumDetector::with_params(0.1, 2.0);
+    // sigma_min prevents infinite sensitivity when baseline has zero variance
+    let mut cusum_entropy = CusumDetector::with_sigma_min(0.1, 2.0, 0.1);
+    let mut cusum_beta0 = CusumDetector::with_sigma_min(0.1, 2.0, 0.5);
+    let mut cusum_beta1 = CusumDetector::with_sigma_min(0.1, 2.0, 0.5);
 
     cusum_entropy.calibrate(&calibration_entropy);
     cusum_beta0.calibrate(&calibration_beta0);

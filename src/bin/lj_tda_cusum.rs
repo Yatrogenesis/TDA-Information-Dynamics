@@ -18,7 +18,6 @@ use tda_info_dynamics::{
     compute_entropy,
     CusumDetector,
     BettiCurve,
-    PersistenceLandscape,
 };
 
 fn main() {
@@ -28,7 +27,7 @@ fn main() {
     println!("═══════════════════════════════════════════════════════════════\n");
 
     // System parameters
-    let n_particles = 108;  // 3³ × 4 for FCC
+    let n_particles = 864;  // 6³ × 4 for FCC (larger system for crystallization)
     let density = 0.85;     // Reduced density ρ*
     let t_initial = 2.0;    // Initial temperature T* (liquid)
     let t_final = 0.5;      // Final temperature T* (crystal)
@@ -89,8 +88,9 @@ fn main() {
     }
 
     // Initialize CUSUM detectors
-    let mut cusum_entropy = CusumDetector::with_params(0.5, 4.0);
-    let mut cusum_beta1 = CusumDetector::with_params(0.5, 4.0);
+    // sigma_min prevents infinite sensitivity when baseline has zero variance
+    let mut cusum_entropy = CusumDetector::with_sigma_min(0.5, 4.0, 0.1);
+    let mut cusum_beta1 = CusumDetector::with_sigma_min(0.5, 4.0, 0.1);
 
     cusum_entropy.calibrate(&calibration_entropy);
     cusum_beta1.calibrate(&calibration_beta1);
@@ -112,8 +112,8 @@ fn main() {
     println!("  Cooling Phase: Monitoring for Crystallization Precursors");
     println!("══════════════════════════════════════════════════════════════\n");
 
-    let cooling_rate = 0.02;
-    let steps_per_sample = 500;
+    let cooling_rate = 0.01;      // Slower cooling for crystallization
+    let steps_per_sample = 1000;  // More equilibration time
     let mut current_temp = t_initial;
 
     let mut entropy_detected = false;

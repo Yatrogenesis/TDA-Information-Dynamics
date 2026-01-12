@@ -122,6 +122,7 @@ pub fn compute_entropy(pd: &PersistenceDiagram) -> TopologicalEntropy {
 ///
 /// This provides a faster approximation when full persistent
 /// homology is too expensive.
+#[allow(dead_code)]
 pub fn entropy_from_edges(distances: &ndarray::Array2<f64>, max_eps: f64) -> f64 {
     let n = distances.nrows();
     if n < 2 {

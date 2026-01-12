@@ -83,8 +83,25 @@ pub use cusum::{
 
 // Re-exports from systems
 pub use systems::{
+    // Traits
+    DynamicalSystem,
+    Controllable,
+    Bifurcating,
+    TDAConfig,
+    // Lennard-Jones
     LennardJonesSystem,
     LJState,
+    // Kuramoto
     KuramotoSystem,
     KuramotoState,
+    // FitzHugh-Nagumo
+    FitzHughNagumoSystem,
+    FHNState,
+    FHNNeuronState,
+    // XY Model
+    XYModel,
+    XYState,
+    // Brusselator
+    Brusselator,
+    BrusselatorState,
 };

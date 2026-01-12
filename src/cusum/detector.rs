@@ -41,6 +41,8 @@ pub struct CusumDetector {
     reference_mean: f64,
     /// Reference standard deviation
     reference_std: f64,
+    /// Minimum sigma (prevents infinite sensitivity when baseline has zero variance)
+    sigma_min: f64,
     /// Allowance parameter k (slack)
     allowance: f64,
     /// Detection threshold h
@@ -60,11 +62,15 @@ pub struct CusumDetector {
 }
 
 impl CusumDetector {
+    /// Default minimum sigma (reasonable for most topological statistics)
+    const DEFAULT_SIGMA_MIN: f64 = 0.01;
+
     /// Create new detector with default parameters
     pub fn new() -> Self {
         Self {
             reference_mean: 0.0,
             reference_std: 1.0,
+            sigma_min: Self::DEFAULT_SIGMA_MIN,
             allowance: 0.5,  // Standard choice: k = 0.5σ
             threshold: 5.0,  // Standard choice: h = 5σ
             current_cusum: 0.0,
@@ -85,10 +91,33 @@ impl CusumDetector {
         }
     }
 
+    /// Create detector with custom parameters including sigma_min
+    ///
+    /// # Arguments
+    /// * `allowance_sigmas` - Allowance k in units of sigma
+    /// * `threshold_sigmas` - Detection threshold h in units of sigma
+    /// * `sigma_min` - Minimum sigma to prevent infinite sensitivity
+    pub fn with_sigma_min(allowance_sigmas: f64, threshold_sigmas: f64, sigma_min: f64) -> Self {
+        Self {
+            allowance: allowance_sigmas,
+            threshold: threshold_sigmas,
+            sigma_min: sigma_min.max(1e-10),  // Absolute minimum
+            ..Self::new()
+        }
+    }
+
+    /// Set minimum sigma
+    pub fn set_sigma_min(&mut self, sigma_min: f64) {
+        self.sigma_min = sigma_min.max(1e-10);
+    }
+
     /// Calibrate from reference data (H₀ regime)
     ///
     /// The calibration period should represent the system in its
     /// normal/reference state before any transition.
+    ///
+    /// Note: If the reference data has zero or very low variance,
+    /// sigma_min will be used to prevent infinite sensitivity.
     pub fn calibrate(&mut self, reference_data: &[f64]) {
         if reference_data.is_empty() {
             return;
@@ -101,7 +130,9 @@ impl CusumDetector {
         let variance: f64 = reference_data.iter()
             .map(|x| (x - self.reference_mean).powi(2))
             .sum::<f64>() / (n - 1.0).max(1.0);
-        self.reference_std = variance.sqrt().max(1e-10);
+
+        // Use sigma_min to prevent infinite sensitivity when baseline has zero variance
+        self.reference_std = variance.sqrt().max(self.sigma_min);
 
         // Convert sigma-based parameters to absolute values
         // allowance and threshold are stored as sigma multipliers
