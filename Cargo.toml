@@ -1,13 +1,14 @@
 [package]
 name = "tda_info_dynamics"
-version = "0.1.0"
+version = "0.2.0"
 edition = "2021"
-authors = ["Francisco Molina Burgos <yatrogenesis@proton.me>"]
+authors = ["Francisco Molina-Burgos <fmolina@avermex.com>"]
 description = "Topological Dynamics of Information: Critical Transition Detection via Persistent Homology and Sequential Analysis (TDA-CUSUM)"
 license = "MIT"
 repository = "https://github.com/Yatrogenesis/TDA-Information-Dynamics"
 keywords = ["topology", "phase-transitions", "persistent-homology", "information-theory", "complex-systems"]
 categories = ["science", "mathematics"]
+readme = "README.md"
 
 [dependencies]
 ndarray = { version = "0.16", features = ["rayon"] }
@@ -24,14 +25,38 @@ opt-level = 3
 lto = true
 codegen-units = 1
 
+[lib]
+name = "tda_info_dynamics"
+path = "src/lib.rs"
+
+# =============================================================================
+# Binaries: TDA-CUSUM Phase Transition Detection
+# =============================================================================
+
 [[bin]]
-name = "lj_tda_cusum"
-path = "src/bin/lj_tda_cusum.rs"
+name = "brusselator_tda_cusum"
+path = "src/bin/brusselator_tda_cusum.rs"
+
+[[bin]]
+name = "fhn_tda_cusum"
+path = "src/bin/fhn_tda_cusum.rs"
+
+[[bin]]
+name = "xy_tda_cusum"
+path = "src/bin/xy_tda_cusum.rs"
 
 [[bin]]
 name = "kuramoto_tda"
 path = "src/bin/kuramoto_tda.rs"
 
-[lib]
-name = "tda_info_dynamics"
-path = "src/lib.rs"
+[[bin]]
+name = "lj_tda_cusum"
+path = "src/bin/lj_tda_cusum.rs"
+
+[[bin]]
+name = "lj_exact_tda_cusum"
+path = "src/bin/lj_exact_tda_cusum.rs"
+
+[[bin]]
+name = "lj_exact_vs_euler"
+path = "src/bin/lj_exact_vs_euler.rs"
