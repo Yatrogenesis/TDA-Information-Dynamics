@@ -46,8 +46,9 @@
 //!
 //! ## Author
 //!
-//! Francisco Molina Burgos
-//! Independent Researcher
+//! Francisco Molina-Burgos
+//! Avermex Research Division
+//! Mérida, Yucatán, México
 //! 2026
 
 pub mod topology;
@@ -57,12 +58,19 @@ pub mod systems;
 
 // Re-exports from topology
 pub use topology::{
+    // Approximate persistence (Euler-based, fast)
     PersistenceDiagram,
     PersistenceInterval,
+    compute_persistence,
+    // Exact persistence (standard algorithm, matches Ripser)
+    ExactPersistenceDiagram,
+    ExactInterval,
+    compute_exact_persistence,
+    compute_exact_persistence_simple,
+    // Complex construction
     VietorisRips,
     BettiNumbers,
     BettiCurve,
-    compute_persistence,
 };
 
 // Re-exports from information
