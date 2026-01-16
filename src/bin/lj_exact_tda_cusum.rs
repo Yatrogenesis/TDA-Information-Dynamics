@@ -103,7 +103,7 @@ fn main() {
 
     let total_cooling_steps = 100;
     let cooling_rate = (t_initial / t_final).ln() / total_cooling_steps as f64;
-    let mut current_temp = t_initial;
+    let mut current_temp: f64;
 
     let mut detection_temp = None;
     let mut detection_step = None;
