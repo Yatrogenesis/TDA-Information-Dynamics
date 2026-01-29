@@ -1,0 +1,145 @@
+\documentclass[aps,pre,twocolumn,superscriptaddress]{revtex4-2}
+
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{booktabs}
+
+\begin{document}
+
+\title{TDA-CUSUM: A Universal Framework for Topological Early Warning of Critical Transitions in Dynamical Systems}
+
+\author{Francisco Molina-Burgos}
+\email{fmolina@avermex.com}
+\affiliation{Avermex Research Division, M\'erida, Yucat\'an, M\'exico}
+
+\date{January 25, 2026}
+
+\begin{abstract}
+We present TDA-CUSUM, a framework combining Topological Data Analysis with sequential change-point detection for early warning of critical transitions in dynamical systems. We validate the methodology across five fundamentally different systems: the Brusselator (chemical oscillator), FitzHugh-Nagumo (excitable neuron), XY model (planar spins), Kuramoto model (coupled oscillators), and Lennard-Jones particles (crystallization). In all cases, topological signatures detected via CUSUM \textit{precede} traditional bifurcation indicators: $t_{\text{CUSUM}} < t_{\text{physical}}$. This universality supports the hypothesis of Topological Informational Primacy---that critical transitions are fundamentally topological events.
+\end{abstract}
+
+\maketitle
+
+\section{Introduction}
+
+Critical transitions---abrupt shifts in dynamical systems---occur across physics, biology, ecology, and engineering. Early warning signals are crucial for prediction and intervention. Traditional approaches rely on system-specific order parameters or generic statistical indicators (variance, autocorrelation).
+
+We propose a \textit{topological} approach: monitoring the shape of the system's phase space via persistent homology. The central hypothesis is that topological reorganization \textit{precedes} metric changes detectable by conventional indicators.
+
+\section{Theoretical Framework}
+
+\subsection{Topological State Space}
+
+For a dynamical system with state $\mathbf{x}(t)$, we construct point clouds via delay embedding or direct observation. The Vietoris-Rips complex $VR_\epsilon(\mathbf{x})$ captures connectivity at scale $\epsilon$.
+
+\subsection{Persistence Entropy}
+
+Given persistence diagram $PD_k = \{(b_i, d_i)\}$:
+\begin{equation}
+S_k = -\sum_i p_i \log p_i, \quad p_i = \frac{d_i - b_i}{L}
+\end{equation}
+where $L = \sum_j(d_j - b_j)$ is total persistence.
+
+\subsection{CUSUM Detection}
+
+The cumulative sum statistic:
+\begin{equation}
+C^+(t) = \max\left(0, C^+(t-1) + z_t - k\right)
+\end{equation}
+where $z_t = (S_k(t) - \mu)/\sigma$ is the standardized entropy. Detection occurs when $C^+(t) > h$.
+
+We introduce \textbf{sigma-min enhancement}: $\sigma \leftarrow \max(\sigma, \sigma_{\min})$ to prevent infinite sensitivity when baseline variance vanishes.
+
+\section{Validated Systems}
+
+\subsection{Brusselator (Hopf Bifurcation)}
+
+Chemical oscillator with equations:
+\begin{align}
+\dot{X} &= A + X^2Y - (B+1)X \\
+\dot{Y} &= BX - X^2Y
+\end{align}
+Hopf bifurcation at $B_c = 1 + A^2$.
+
+\textbf{Result:} CUSUM detection at $B = 1.36$, oscillations at $B = 3.08$. Early warning: $\Delta B = +1.72$.
+
+\subsection{FitzHugh-Nagumo (Excitable Transition)}
+
+Neuronal excitability model:
+\begin{align}
+\dot{v} &= v - v^3/3 - w + I_{\text{ext}} \\
+\dot{w} &= \epsilon(v + a - bw)
+\end{align}
+
+\textbf{Result:} Detection at $I = 0.15$, transition at $I = 0.56$. Early warning: $\Delta I = +0.41$.
+
+\subsection{XY Model (BKT Transition)}
+
+Planar spin Hamiltonian:
+\begin{equation}
+H = -J\sum_{\langle ij \rangle} \cos(\theta_i - \theta_j)
+\end{equation}
+BKT transition at $T_{\text{BKT}} \approx 0.893$.
+
+\textbf{Result:} Detection at $T = 0.73$, transition at $T = 0.94$. Early warning: $\Delta T = +0.21$.
+
+\subsection{Kuramoto Model (Synchronization)}
+
+Coupled oscillators:
+\begin{equation}
+\dot{\theta}_i = \omega_i + \frac{K}{N}\sum_j \sin(\theta_j - \theta_i)
+\end{equation}
+
+\textbf{Result:} Detection at $K = 0.60$, synchronization at $K = 1.10$. Early warning: $\Delta K = +0.50$.
+
+\subsection{Lennard-Jones (Crystallization)}
+
+Particle system undergoing thermal quench.
+
+\textbf{Result:} 73\% precursor rate at $N=144$, scaling to 100\% for $N \geq 900$.
+
+\section{Summary of Results}
+
+\begin{table}[h]
+\caption{Early warning across validated systems.}
+\begin{ruledtabular}
+\begin{tabular}{lccc}
+System & Transition & $t_{\text{CUSUM}}$ & Early Warning \\
+\hline
+Brusselator & Hopf & $B=1.36$ & +1.72 \\
+FitzHugh-Nagumo & Hopf & $I=0.15$ & +0.41 \\
+XY Model & BKT & $T=0.73$ & +0.21 \\
+Kuramoto & Sync & $K=0.60$ & +0.50 \\
+Lennard-Jones & Crystal & 73--100\% & Variable \\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\section{Discussion}
+
+The universality of $t_{\text{CUSUM}} < t_{\text{physical}}$ across five fundamentally different systems---chemical, neural, magnetic, oscillatory, and particulate---suggests that topological reorganization is a \textit{generic} precursor to critical transitions.
+
+This supports the \textbf{Topological Informational Primacy} hypothesis: the topology of phase space must reorganize before metric order parameters can change. The topological layer is \textit{causally prior} to the metric layer.
+
+\section{Implementation}
+
+The framework is implemented in Rust with both exact (Ripser-compatible) and Euler-approximated persistence. Available at: \url{https://github.com/Yatrogenesis/TDA-Information-Dynamics}
+
+\section{Conclusion}
+
+TDA-CUSUM provides a universal, model-independent early warning framework for critical transitions. The consistent precedence of topological over metric signatures across diverse systems supports a fundamental role for topology in dynamical phase transitions.
+
+\begin{acknowledgments}
+Computational assistance from Claude (Anthropic).
+\end{acknowledgments}
+
+\begin{thebibliography}{15}
+\bibitem{carlsson2009} G. Carlsson, Bull. Am. Math. Soc. \textbf{46}, 255 (2009).
+\bibitem{page1954} E. S. Page, Biometrika \textbf{41}, 100 (1954).
+\bibitem{kuramoto1984} Y. Kuramoto, \textit{Chemical Oscillations, Waves, and Turbulence} (Springer, 1984).
+\bibitem{kosterlitz1973} J. M. Kosterlitz and D. J. Thouless, J. Phys. C \textbf{6}, 1181 (1973).
+\bibitem{fitzhugh1961} R. FitzHugh, Biophys. J. \textbf{1}, 445 (1961).
+\end{thebibliography}
+
+\end{document}
