@@ -2,6 +2,7 @@
 
 **Topological Dynamics of Information: Critical Transition Detection via Persistent Homology and Sequential Analysis (TDA-CUSUM)**
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18408154.svg)](https://doi.org/10.5281/zenodo.18408154)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Rust](https://img.shields.io/badge/rust-2021-orange.svg)](https://www.rust-lang.org/)
 [![Tests](https://img.shields.io/badge/tests-35%20passing-brightgreen.svg)]()
@@ -33,7 +34,6 @@ The topological warning precedes the physical manifestation of the phase transit
 | **XY Model** | BKT transition | T = 0.73 | T = 0.94 | +0.21 |
 | **Kuramoto** | Synchronization | K = 0.60 | K = 1.10 | +0.50 |
 | **Lennard-Jones** | Crystallization | 73% rate | - | Variable |
-
 ## Theoretical Framework
 
 ### 1. Topological Characterization
